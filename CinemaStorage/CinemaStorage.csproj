@@ -175,6 +175,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\MovieRepo.cs" />
+    <Compile Include="Infrastructure\PosterLocationHelper.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\CatalogViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />

@@ -109,16 +109,15 @@ textarea {
     width:130px;
     height:100%;
     text-align:center;
-    
     vertical-align:middle;
 }
 
 .last-movies-item .caption{
-    height:20%;
+    /*height:20%;*/
 }
 
 .last-movies-item img{
-    height:80%;
+    /*height:40%;*/
 }
 
 /* catalog styles */

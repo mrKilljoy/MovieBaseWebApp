@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using CinemaStorage.Infrastructure;
 
 namespace CinemaStorage.Controllers
 {
     public class MoviesController : Controller
     {
-        private Infrastructure.MovieRepo _repo;
+        private MovieRepo _repo;
        
         /// <summary>
         /// Главная страница.
@@ -16,9 +17,7 @@ namespace CinemaStorage.Controllers
         /// <returns></returns>
         public ActionResult Index()
         {
-            CheckPosterFolder();
-
-            using (_repo = new Infrastructure.MovieRepo(new Models.ApplicationDbContext()))
+            using (_repo = new MovieRepo(new Models.ApplicationDbContext()))
             {
                 var collection = _repo.GetLastMovies();
 
@@ -33,7 +32,7 @@ namespace CinemaStorage.Controllers
         /// <returns></returns>
         public ActionResult Catalog(int? id)
         {
-            using (_repo = new Infrastructure.MovieRepo(new Models.ApplicationDbContext()))
+            using (_repo = new MovieRepo(new Models.ApplicationDbContext()))
             {
                 int page_number = id ?? 1;
                 if (page_number < 0)
@@ -52,7 +51,7 @@ namespace CinemaStorage.Controllers
                     RecordsPerPage = records_per_page,
                     TotalRecords = total_records,
                     TotalPages = total_pages,
-                    MoviesList = _repo.GetMovies(Infrastructure.MovieOrderType.ByTitleAsc, records_per_page, (page_number - 1) * records_per_page).ToArray()
+                    MoviesList = _repo.GetMovies(MovieOrderType.ByTitleAsc, records_per_page, (page_number - 1) * records_per_page).ToArray()
                 };
 
                 return View(model);
@@ -69,7 +68,7 @@ namespace CinemaStorage.Controllers
             if (id == null)
                 return View();
 
-            using (_repo = new Infrastructure.MovieRepo(new Models.ApplicationDbContext()))
+            using (_repo = new MovieRepo(new Models.ApplicationDbContext()))
             {
                 var found = _repo.GetMovie((long)id);
 
@@ -88,7 +87,7 @@ namespace CinemaStorage.Controllers
             if (id == null)
                 return View();
 
-            using (_repo = new Infrastructure.MovieRepo(new Models.ApplicationDbContext()))
+            using (_repo = new MovieRepo(new Models.ApplicationDbContext()))
             {
                 var found = _repo.GetMovie((long)id);
 
@@ -108,14 +107,21 @@ namespace CinemaStorage.Controllers
             if (model == null)
                 return View();
 
-            using (_repo = new Infrastructure.MovieRepo(new Models.ApplicationDbContext()))
+            using (_repo = new MovieRepo(new Models.ApplicationDbContext()))
             {
                 try
                 {
+                    // привязка информации о пользователе
                     string login = User.Identity.Name;
                     var user = _repo.GetUser(login);
-                    model.PostedBy = user; // привязка информации о пользователе
+                    model.PostedBy = user; 
                     model.UserId = user.Id;
+
+                    // привязка загруженного изображения
+                    if (PosterLocationHelper.IsFileUploaded(model.PosterPath))
+                        model.PosterPath = PosterLocationHelper.MakeRelativeImagePath(model.PosterPath);
+                    else
+                        model.PosterPath = null;
 
                     if (model.Id == 0)
                         _repo.AddMovie(model);
@@ -134,24 +140,37 @@ namespace CinemaStorage.Controllers
         }
 
         /// <summary>
-        /// Проверить наличие каталога для постеров.
+        /// Загрузить выбранное изображение в папку постеров (/Content/posters)
         /// </summary>
-        private void CheckPosterFolder()
+        /// <returns></returns>
+        public JsonResult UploadImageAjax()
         {
-            string core_folder_path = HttpRuntime.AppDomainAppPath;
-            string poster_folder_path = HttpContext.Server.MapPath("/Content/posters");
-
-            bool is_folder_exists = System.IO.Directory.Exists(poster_folder_path);
-
-            try
+            if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
             {
-                // если каталог отсутствует - создать его
-                if (!is_folder_exists)
-                    System.IO.Directory.CreateDirectory(poster_folder_path);
+                var image = System.Web.HttpContext.Current.Request.Files["Images"];
+                if (image == null)
+                    return Json(false);
+
+                if (!image.ContentType.Contains("image/"))
+                    return Json(false);
+
+                if (!PosterLocationHelper.IsFolderExists())
+                    PosterLocationHelper.FolderInitialize();
+
+                string img_path_full = PosterLocationHelper.MakeAbsoluteImagePath(image.FileName);
+
+                try
+                {
+                    image.SaveAs(img_path_full);
+                    return Json(true);
+                }
+                catch (Exception)
+                {
+                    return Json(false);
+                }
             }
-            catch (Exception)
-            {
-            }
+
+            return Json(null);
         }
     }
 }

@@ -72,7 +72,7 @@
                         <div class="form-group">
                             @Html.LabelFor(m=>m.PosterPath, "Постер", new { @class = "control-label col-md-2" })
                             <div class="col-md-10">
-                                @Html.TextBoxFor(m=>m.PosterPath, null, new { type = "file" })
+                                @Html.TextBoxFor(m=>m.PosterPath, null, new { type = "file", accept = "image/jpeg,image/png", id = "movie-poster-input" })
                             </div>
                         </div>
 
