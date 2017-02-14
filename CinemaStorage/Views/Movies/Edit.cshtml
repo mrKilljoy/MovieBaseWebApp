@@ -1,0 +1,103 @@
+﻿@model CinemaStorage.Models.Movie
+
+@{
+    if(Model == null)
+    {
+        ViewBag.Title = "CinemaBunker | Добавление";
+    }
+    else
+    {
+        ViewBag.Title = "CinemaBunker | Редактирование";
+    }
+
+}
+
+<div class="movie-edit-header">
+    @*<h2>Редактирование записи</h2>*@
+    @if (Model == null)
+    {
+        <h2>Добавление записи</h2>
+    }
+    else
+    {
+        <h2>Редактирование записи</h2>
+    }
+</div>
+
+<div class="well movie-edit-container">
+    @using (@Html.BeginForm("Edit", "Movies", FormMethod.Post)) { 
+        <div class="row">
+            @Html.ValidationSummary("", new { @class = "text-danger" })
+
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <div class="img-thumbnail">
+                        <img src="~/Content/images/poster_none.png" />
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="movie-edit-caption form-horizontal">
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Title, "Название", new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Title, new { @class = "form-control" })
+                                @Html.ValidationMessageFor(model => model.Title)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Genre, "Жанр", new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Genre, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Director, "Режиссер", new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m => m.Director, new { @class = "form-control" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Date, "Дата выхода", new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(model => model.Date, "{0:yyyy-MM-dd}", new { @class = "form-control datepicker"})
+                                @Html.ValidationMessageFor(model => model.Date)
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m=>m.PosterPath, "Постер", new { @class = "control-label col-md-2" })
+                            <div class="col-md-10">
+                                @Html.TextBoxFor(m=>m.PosterPath, null, new { type = "file" })
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            @Html.LabelFor(m => m.Description, "Описание", new { @class = "col-md-2 control-label" })
+                            <div class="col-md-10">
+                                @Html.TextAreaFor(m => m.Description, new { @class = "form-control", rows = 6, @resize = "None" })
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-3 col-md-offset-3">
+                    <input type="submit" value="Сохранить" class="btn btn-success" />
+                </div>
+
+                <div class="col-md-3 ">
+                    @Html.ActionLink("В каталог", "Catalog", null, new { @class = "btn btn-info" })
+                </div>
+            </div>
+        </div>
+    }
+</div>
+

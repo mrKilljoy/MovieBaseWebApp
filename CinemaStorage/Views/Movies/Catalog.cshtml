@@ -1,0 +1,100 @@
+﻿@model CinemaStorage.Models.CatalogViewModel
+
+@{
+    ViewBag.Title = "CinemaBunker | Каталог фильмов";
+}
+
+<div class="row">
+    <div class="catalog-header">
+        <h2>Каталог фильмов</h2>
+    </div>
+</div>
+
+<div class="panel panel-success movies-list-container">
+    <div class="panel-body ">
+        @if (Model == null || Model.MoviesList.Length == 0)
+        {
+            <h3>Каталог фильмов пуст.</h3>
+        }
+        else
+        {
+            <ul class="media-list">
+                @if (Model != null)
+                {
+                    foreach (var item in Model.MoviesList)
+                    {
+                        <li class="media movies-list-item">
+                            <div class="media-left">
+                                @if (string.IsNullOrWhiteSpace(item.PosterPath))
+                                {
+                                    <img src="~/Content/images/poster_none.png" />
+                                }
+                                else
+                                {
+                                    <img src="@item.PosterPath" />
+                                }
+                            </div>
+
+                            <div class="media-body">
+                                @Html.ActionLink(item.Title, "Details", new { id = item.Id })
+                                <p><b>Режиссер: </b>@item.Director</p>
+                                <p><b>Год выпуска: </b>@item.Date.Year</p>
+                                <p><b>Загружено: </b>@(item.PostedBy?.Nickname ?? "Admin")</p>
+                            </div>
+                        </li>
+                    }
+                }
+            </ul>
+        }
+    </div>
+
+    <div class="panel-footer">
+        <div class="movies-list-paginator">
+
+            @if (Model == null || Model.MoviesList.Length == 0)
+            {
+
+            }
+            else
+            {
+                <ul class="pagination">
+                    @if (Model != null)
+                {
+                    if (Model.PageNumber > 1)
+                    {
+                            <li><a href="@Url.Action("Catalog","Movies", new { id = (Model.PageNumber - 1)})">&laquo;</a></li>
+                        }
+                        else
+                        {
+                            <li class="disabled"><a href="#">&laquo;</a></li>
+                        }
+
+                        for (int i = 0; i < Model.MoviesList.Count(); i++)
+                        {
+                            var item = Model.MoviesList[i];
+
+                            if (i + 1 == Model.PageNumber)
+                            {
+                                    <li class="active"><a href="#">@(i + 1)</a></li>
+                                }
+                                else
+                                {
+                                    <li><a href="@Url.Action("Catalog","Movies", new { id = (i + 1)})">@(i + 1)</a></li>
+                            }
+                        }
+
+                        if (Model.PageNumber < Model.TotalPages)
+                        {
+                            <li><a href="@Url.Action("Catalog","Movies", new { id = (Model.PageNumber + 1)})">&raquo;</a></li>
+                        }
+                        else
+                        {
+                            <li class="disabled"><a href="#">&raquo;</a></li>
+                        }
+                    }
+                </ul>
+            }
+        </div>
+    </div>
+</div>
+

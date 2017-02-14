@@ -1,0 +1,66 @@
+﻿@model IEnumerable<CinemaStorage.Models.Movie>
+@{
+    ViewBag.Title = "CinemaBunker | Главная страница ";
+}
+
+<div class="row">
+    <div class="main-header">
+        <h1>Cinema Bunker</h1>
+        <h3>Ваш личный киноархив</h3>
+    </div>
+</div>
+
+<div class="row page-pointer">
+    <div class="col-md-4">
+        @Html.ActionLink("Каталог", "Catalog", "Movies", null, new { @class = ""})
+    </div>
+
+    <div class="col-md-4">
+        <a href="#">Форум</a>
+    </div>
+
+    <div class="col-md-4">
+        <a href="#">О нас</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="container last-movies-container">
+        <div class="panel panel-danger">
+            <div class="panel-heading">
+                Последние фильмы
+            </div>
+            
+            <div class="panel-body">
+                <div class="col-md-12">
+                    @if(Model == null || Model.Count() == 0)
+                    {
+                        <h3>Фильмы не найдены</h3>
+                    }
+                    else
+                    {
+                        <ul>
+                            @foreach (var item in Model)
+                            {
+                                <li class="last-movies-item">
+                                    <a href="@Url.Action("Details", new { id = item.Id })">
+                                        <div class="thumbnail">
+                                            @if (string.IsNullOrWhiteSpace(item.PosterPath))
+                                            {
+                                                <img src="~/Content/images/poster_none.png" alt="missed_image" />
+                                            }
+                                            <div class="caption">
+                                                <h5>@item.Title</h5>
+                                            </div>
+                                        </div>
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+            
+        </div>
+    </div>
+</div>

@@ -1,0 +1,76 @@
+﻿@model CinemaStorage.Models.Movie
+
+@{
+    if (Model == null)
+    {
+        ViewBag.Title = "CinemaBunker | Не найдено";
+    }
+    else
+    {
+        ViewBag.Title = string.Format("CinemaBunker | {0} ({1})", Model.Title, Model.Date.Year);
+    }
+}
+
+@if (Model == null)
+{
+    <h2>Фильм не найден!</h2>
+}
+else
+{
+    <div class="movie-details-header">
+        <h2>@Model.Title @("(" + Model.Date.Year + ")")</h2>
+    </div>
+
+    <div class="well movie-details-container">
+
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-4">
+                    <div class="img-thumbnail">
+                        @if (string.IsNullOrWhiteSpace(Model.PosterPath))
+                        {
+                            <img src="~/Content/images/poster_none.png" />
+                        }
+                        else
+                        {
+                            <img src="@Model.PosterPath" />
+                        }
+                    </div>
+                </div>
+
+                <div class="col-md-8">
+                    <div class="movie-details-caption">
+                        <p><b>Название:</b> @Model.Title</p>
+                        <p><b>Жанр:</b> @Model.Genre</p>
+                        <p><b>Режиссер:</b> @Model.Director</p>
+                        <p><b>Год выпуска:</b> @Model.Date.Year</p>
+                        <p><b>Загружено:</b> @(Model.PostedBy?.Nickname ?? "Admin")</p>
+                        <h4>Описание:</h4>
+                        <p>@Model.Description</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-md-12">
+
+                @if (Request.IsAuthenticated && Model.PostedBy != null && User.Identity.Name == Model.PostedBy.UserName)
+                {
+                    <div class="col-md-3 col-md-offset-3">
+                        @Html.ActionLink("В каталог", "Catalog", null, new { @class = "btn btn-default" })
+                    </div>
+                    <div class="col-md-3 ">
+                        @Html.ActionLink("Редактировать", "Edit", new { id = Model.Id }, new { @class = "btn btn-info" })
+                    </div>
+                }
+                else
+                {
+                    <div class="col-md-3 col-md-offset-5">
+                        @Html.ActionLink("В каталог", "Catalog", null, new { @class = "btn btn-default" })
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+}

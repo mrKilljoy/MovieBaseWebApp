@@ -1,0 +1,219 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+.navbar-logo-container{
+    margin-right:15px;
+}
+
+.navbar-logo-container > img{
+    height:50px;
+    padding: 5px 0;
+}
+
+.navbar .container{
+    font-family:'Segoe UI';
+    font-size:1.2em;
+}
+
+.navbar-header > a:hover > div{
+    filter: brightness(1.2);
+}
+/* auth styles */
+.account-header{
+    margin-top:30px;
+    margin-bottom:40px;
+}
+
+/* main page links */
+.page-pointer {
+    text-align:center;
+    margin:30px auto;
+}
+
+.page-pointer a{
+    font-size:1.5em;
+    font-family:Verdana;
+    color:black;
+}
+
+.page-pointer a:visited, 
+.page-pointer a:link, 
+.page-pointer a:active{
+    text-decoration:none;
+}
+
+.page-pointer a:hover{
+    text-decoration:underline;
+    text-decoration-color:red;
+}
+
+.main-header{
+    text-align:center;
+    margin-top:15px;
+    margin-bottom:30px;
+}
+
+.main-header > h1{
+    font-family:Impact;
+}
+
+.main-header > h3{
+    font-family:Verdana;
+}
+
+/* main page styles */
+.panel.panel-danger, .panel-heading{
+    border-radius:0;
+}
+
+.last-movies-container{
+    margin:0 auto;
+    width:80%;
+}
+
+.last-movies-container ul{
+    list-style-type:none;
+}
+
+.last-movies-container ul > li{
+    display:inline-block;
+}
+
+.last-movies-item{
+    display:inline-block;
+    border-radius:3px;
+    margin:0 10px;
+    padding:3px;
+    width:130px;
+    height:100%;
+    text-align:center;
+    
+    vertical-align:middle;
+}
+
+.last-movies-item .caption{
+    height:20%;
+}
+
+.last-movies-item img{
+    height:80%;
+}
+
+/* catalog styles */
+.catalog-header{
+    text-align:center;
+    margin-top:15px;
+    margin-bottom:30px;
+}
+
+.catalog-header > h2{
+    font-family:Verdana;
+}
+
+.movies-list-container{
+    width:60%;
+    margin:0 auto;
+}
+
+.movies-list-item{
+    border:1px solid #bebebe;
+    box-shadow:1px 1px 2px #808080;
+    border-radius:2px;
+}
+
+.movies-list-item > .media-left, .movies-list-item > .media-body{
+    padding:10px;
+}
+
+.movies-list-item .media-body > a{
+    display:inline-block;
+    padding-bottom:10px;
+    color:black;
+    font-size:1.4em;
+}
+
+.movies-list-item .media-body > a:visited, 
+.movies-list-item .media-body > a:link, 
+.movies-list-item .media-body > a:active{
+    text-decoration:none;
+}
+
+.movies-list-item .media-body > a:hover{
+    text-decoration:underline;
+    text-decoration-color:red;
+}
+
+.movies-list-item img{
+    height:150px;
+}
+
+.movies-list-paginator{
+    display:block;
+    margin:0 auto;
+    text-align:center;
+}
+
+/* details styles */
+.movie-details-header{
+    margin-top:20px;
+    margin-bottom:25px;
+}
+
+.movie-details-container{
+    width:60%;
+    margin:0 auto;
+}
+
+.movie-details-container .img-thumbnail > img{
+    max-width:inherit;
+}
+
+.movie-details-caption > h4{
+    margin-top:20px;
+    margin-bottom:5px;
+}
+
+/* edit styles */
+.movie-edit-header{
+    margin-top:15px;
+    margin-bottom:40px;
+}
+
+.movie-edit-container{
+    width:70%;
+    margin:0 auto;
+}
+
+.movie-edit-container .img-thumbnail > img{
+    max-width:inherit;
+}
+
+.movie-edit-caption > .form-group{
+    margin-bottom:15px;
+}
+
+.form-horizontal .form-group label{
+    text-align:left;
+}
